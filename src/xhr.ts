@@ -3,10 +3,13 @@ import { parseHeaders } from './helpers/header'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
-    const { data = null, url, method = 'get', headers, responseType } = config
+    const { data = null, url, method = 'get', headers, responseType, timeout } = config
     const request = new XMLHttpRequest()
     if (responseType) {
       request.responseType = responseType
+    }
+    if (timeout) {
+      request.timeout = timeout
     }
     request.open(method.toUpperCase(), url, true)
     request.onreadystatechange = function () {
@@ -21,8 +24,14 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
           config,
           request
         }
-        resolve(reponse)
+        handleResponse(reponse)
       }
+    }
+    request.onerror = () => {
+      reject(new Error('Network Error'))
+    }
+    request.ontimeout = () => {
+      reject(new Error(`Timeout of ${timeout} ms exceded`))
     }
     Object.keys(headers).map((name) => {
       if (data === null && name.toLowerCase() === 'content-type') {
@@ -32,6 +41,13 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       }
     })
     request.send(data)
+    function handleResponse(response: AxiosResponse): void {
+      if (response.status >= 200 && response.status < 300) {
+        resolve(response)
+      } else {
+        reject(new Error(`Request failed with status code ${response.status}`))
+      }
+    }
   })
 
 }
