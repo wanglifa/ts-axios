@@ -23,3 +23,21 @@ export function processHeaders(headers: Headers, data: any ): Headers {
   }
   return headers
 }
+export function parseHeaders(headers: string): Headers {
+  const newObj: Headers = {}
+  if (headers) {
+    headers.split('\r\n').forEach((line) => {
+      let [key, value] = line.split(':')
+      key = key.trim().toLowerCase()
+      if (!key) {
+        return
+      }
+      value = value.trim().toLowerCase()
+      if (!value) {
+        return
+      }
+      newObj[key] = value
+    })
+  }
+  return newObj
+}
