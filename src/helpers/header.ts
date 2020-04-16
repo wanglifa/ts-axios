@@ -14,11 +14,12 @@ function normalizeHeaderName(headers: Headers, normalizeName: string): void {
     }
   })
 }
-export function processHeaders(headers: Headers, data: any ): void {
+export function processHeaders(headers: Headers, data: any ): Headers {
   normalizeHeaderName(headers, 'Content-Type')
   if (isPlainObject(data)) {
     if (headers && !headers['Content-Type']) {
       headers['Content-Type'] = 'application/json;charset=utf-8'
     }
   }
+  return headers
 }
