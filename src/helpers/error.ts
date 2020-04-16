@@ -23,7 +23,7 @@ export class AxiosError extends Error{
     Object.setPrototypeOf(this, AxiosError.prototype)
   }
 }
-export function createErro(
+export function createError(
   message: string,
   config: AxiosRequestConfig,
   code?: string | null,
