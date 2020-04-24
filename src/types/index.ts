@@ -1,3 +1,5 @@
+import { Interceptors } from '../core/Axios'
+
 export type Method = 'get' | 'GET'
 | 'delete' | 'DELETE'
 | 'head' | 'HEAD'
@@ -33,6 +35,7 @@ export interface AxiosError extends Error{
   response?: AxiosResponse;
 }
 export interface Axios {
+  interceptors: Interceptors;
   request: <T = any>(config: AxiosRequestConfig) => AxiosPromise<T>;
   get: <T = any>(url: string, config?: AxiosRequestConfig) => AxiosPromise<T>;
   head: <T = any>(url: string, config?: AxiosRequestConfig) => AxiosPromise<T>;
