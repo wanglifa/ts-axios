@@ -10,6 +10,7 @@ interface PromiseChain<T> {
   rejected?: RejectedFn;
 }
 export default class Axios {
+  defaults: AxiosRequestConfig
   interceptors: Interceptors
   request(url: any, config?: any): AxiosPromise {
     if (typeof url === 'string') {
@@ -39,7 +40,8 @@ export default class Axios {
     }
     return promise
   }
-  constructor() {
+  constructor(initConfig: AxiosRequestConfig) {
+    this.defaults = initConfig
     this.interceptors = {
       request: new InterceptorManager<AxiosRequestConfig>(),
       response: new InterceptorManager<AxiosResponse>()
