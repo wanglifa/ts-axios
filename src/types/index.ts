@@ -15,6 +15,7 @@ export interface AxiosRequestConfig {
   headers?: any;
   responseType?: XMLHttpRequestResponseType;
   timeout?: number;
+  [key: string]: any;
 }
 export interface AxiosResponse<T = any> {
   data: T;
@@ -36,6 +37,10 @@ export interface AxiosError extends Error{
 }
 export interface Axios {
   interceptors: Interceptors;
+  defaults: {
+    headers: any;
+    [key: string]: any;
+  },
   request: <T = any>(config: AxiosRequestConfig) => AxiosPromise<T>;
   get: <T = any>(url: string, config?: AxiosRequestConfig) => AxiosPromise<T>;
   head: <T = any>(url: string, config?: AxiosRequestConfig) => AxiosPromise<T>;
