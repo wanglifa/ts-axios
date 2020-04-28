@@ -16,6 +16,12 @@ export interface AxiosRequestConfig {
   responseType?: XMLHttpRequestResponseType;
   timeout?: number;
   [key: string]: any;
+  transformRequest?: AxiosTransformer | AxiosTransformer[];
+  transformResponse?: AxiosTransformer | AxiosTransformer[];
+  cancelToken?: CancelToken;
+}
+export interface AxiosTransformer {
+  (data: any, headers?: any): any
 }
 export interface AxiosResponse<T = any> {
   data: T;
@@ -58,9 +64,22 @@ export interface AxiosInterceptorManager<T> {
   use(resolved: ResolvedFn<T>, rejected: RejectedFn): number;
   eject(id: number): void;
 }
+export interface AxiosStatic extends AxiosInstance{
+  create(config?: AxiosRequestConfig): AxiosInstance
+}
 export interface ResolvedFn<T> {
   (val: T): T | Promise<T>;
 }
 export interface RejectedFn {
   (error: any): any;
+}
+export interface CancelToken {
+  promise: Promise<string>;
+  reason?: string;
+}
+export interface Canceler {
+  (message?: string): void
+}
+export interface CancelExecutor {
+  (cancel: Canceler): void
 }

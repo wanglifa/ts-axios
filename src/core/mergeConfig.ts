@@ -56,4 +56,6 @@ export default function mergeConfig(
     const strat = strats[key] || defaultStrat
     config[key] = strat(config1[key], config2![key])
   }
+
+  return config
 }
