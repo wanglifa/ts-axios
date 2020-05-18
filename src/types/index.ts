@@ -19,6 +19,9 @@ export interface AxiosRequestConfig {
   transformRequest?: AxiosTransformer | AxiosTransformer[];
   transformResponse?: AxiosTransformer | AxiosTransformer[];
   cancelToken?: CancelToken;
+  withCredentials?: boolean;
+  xsrfCookieName?: string;
+  xsrfHeaderName?: string;
 }
 export interface AxiosTransformer {
   (data: any, headers?: any): any
@@ -74,12 +77,37 @@ export interface RejectedFn {
   (error: any): any;
 }
 export interface CancelToken {
-  promise: Promise<string>;
-  reason?: string;
+  promise: Promise<Cancel>;
+  reason?: Cancel;
 }
 export interface Canceler {
-  (message?: string): void
+  (message?: string): void;
 }
 export interface CancelExecutor {
-  (cancel: Canceler): void
+  (cancel: Canceler): void;
+}
+export interface CancelTokenSource {
+  token: CancelToken;
+  cancel: Canceler;
+}
+export interface CancelTokenStatic {
+  new(executor: CancelExecutor): CancelToken;
+  source(): CancelTokenSource;
+}
+export interface Cancel {
+  message?: string;
+}
+export interface CancelStatic {
+  new(message?: string): Cancel;
+}
+export interface CancelToken {
+  promise: Promise<Cancel>
+  reason?: Cancel
+  throwIfRequested: () => void;
+}
+export interface AxiosStatic extends AxiosInstance{
+  create(config?: AxiosRequestConfig): AxiosInstance;
+  CancelToken: CancelTokenStatic;
+  Cancel: CancelStatic;
+  isCancel: (value: any) => boolean;
 }
