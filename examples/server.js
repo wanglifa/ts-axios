@@ -77,4 +77,8 @@ router.get('/interceptor/get', (req, res) => {
 router.post('/config/post', (req, res) => {
   res.json(req.body)
 })
-app.use(router)
+app.use(express.static(__dirname, {
+  setHeaders (res) {
+    res.cookie('XSRF-TOKEN-D', '1234abc')
+  }
+}))
